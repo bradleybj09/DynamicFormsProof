@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Dynamic Forms Proof</string>
+    <string name="log_in">Log in</string>
+    <string name="submit">Submit</string>
+</resources>
