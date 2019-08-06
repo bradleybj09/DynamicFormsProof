@@ -1,5 +1,6 @@
 package com.example.dynamicformsproof
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import org.json.JSONObject
@@ -21,6 +22,11 @@ class MainViewModel : ViewModel() {
     }
 
     fun submit() {
+        val invalidWorkFlows = workFlows.filter { !it.isResponseValid() }
+        if (invalidWorkFlows.isNotEmpty()) {
+            Log.d("invalid","first error: ${invalidWorkFlows.first().invalidString}")
+            return
+        }
         val json = JSONObject().also { json ->
             workFlows.forEach { it.addToJson(json) }
         }
@@ -41,6 +47,4 @@ class MainViewModel : ViewModel() {
             listeners.forEach { it.onViewAdded(e) }
         }
     }
-
-    fun getEvent(listener: AddViewListener) = listener.onViewAdded(event)
 }

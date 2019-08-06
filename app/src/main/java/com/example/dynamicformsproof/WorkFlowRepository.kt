@@ -5,41 +5,6 @@ import org.json.JSONObject
 
 class WorkFlowRepository {
 
-    private val jsonString = "{ \"name\": \"deliveryWorkFlow\", \"workflows\": [ " +
-            "{ " +
-            "\"workFlowType\": \"TextInputWorkFlow\", " +
-            "\"key\": \"signerName\", " +
-            "\"minLength\": 0, " +
-            "\"maxLength\": 99999, " +
-            "\"required\": false, " +
-            "\"preFill\": \"\", " +
-            "\"hint\": \"Signer Name\", " +
-            "\"invalidString\": \"Please enter signer name\", " +
-            "\"warningString\": \"\" " +
-            "}, " +
-            "{ " +
-            "\"workFlowType\": \"NumberInputWorkFlow\", " +
-            "\"preFill\": 0, " +
-            "\"requiredMinimum\": 50, " +
-            "\"requiredMaximum\": 100000, " +
-            "\"warnMinimum\": 5000, " +
-            "\"warnMaximum\": 50000, " +
-            "\"key\": \"pounds\", " +
-            "\"hint\": \"Weight (lbs)\", " +
-            "\"required\": true, " +
-            "\"invalidString\": \"Please enter a value for weight\", " +
-            "\"warningString\": \"Weight entry looks fishy, please confirm it is correct and in POUNDS\" " +
-            "}, " +"{ " +
-            "\"workFlowType\": \"BooleanInputWorkFlow\", " +
-            "\"preFill\": false, " +
-            "\"trueRequired\": true, " +
-            "\"key\": \"checkedThing\", " +
-            "\"hint\": \"Thing checked\", " +
-            "\"invalidString\": \"You cannot continue without marking that you have checked the thing\", " +
-            "\"warningString\": \"\" " +
-            "} " +
-            "] }"
-
     val string = "{\n" +
             "  \"name\": \"deliveryWorkFlow\",\n" +
             "  \"workFlows\": [\n" +
