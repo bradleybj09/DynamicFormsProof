@@ -92,14 +92,17 @@ data class MultiSelectFormWidget(
     var preSelect: Array<Int>,
     var maxColumns: Int,
     var key: String,
-    var choices: Array<String>,
+    var choices: MutableList<String>,
     var minChoices: Int,
     var maxChoices: Int,
     override val invalidString: String,
     override val warningString: String
 ) : FormWidget(WidgetType.MultiSelect) {
-    var selections = choices.filterIndexed { i, _ -> i in preSelect }
-    override fun addToJson(json: JSONObject) = Unit.also { json.put(key, selections) }
+    val adapter = MultiSelectWidgetAdapter<String>()
+    var preSelects = choices.filterIndexed { i, _ -> i in preSelect }
+    val selections: List<String>
+        get() = adapter.getSelections()
+    override fun addToJson(json: JSONObject) = Unit.also { json.put(key, adapter.getSelections()) }
     override fun isResponseValid() = selections.size in minChoices..maxChoices
     override fun isWarningRequired() = false
 }
