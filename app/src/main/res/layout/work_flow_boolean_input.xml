@@ -6,7 +6,7 @@
     <data>
         <variable
             name="data"
-            type="com.example.dynamicformsproof.BooleanInputWorkFlow" />
+            type="com.example.dynamicformsproof.BooleanInputFormWidget" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

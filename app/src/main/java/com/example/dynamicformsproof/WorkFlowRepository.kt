@@ -7,9 +7,9 @@ class WorkFlowRepository {
 
     val string = "{\n" +
             "  \"name\": \"deliveryWorkFlow\",\n" +
-            "  \"workFlows\": [\n" +
+            "  \"formWidgets\": [\n" +
             "    {\n" +
-            "      \"workFlowType\": \"TextInputWorkFlow\",\n" +
+            "      \"widgetType\": \"TextInputFormWidget\",\n" +
             "      \"key\": \"signerName\",\n" +
             "      \"minLength\": 0,\n" +
             "      \"maxLength\": 99999,\n" +
@@ -20,7 +20,7 @@ class WorkFlowRepository {
             "      \"warningString\": \"\"\n" +
             "    },\n" +
             "    {\n" +
-            "      \"workFlowType\": \"NumberInputWorkFlow\",\n" +
+            "      \"widgetType\": \"NumberInputFormWidget\",\n" +
             "      \"preFill\": 0,\n" +
             "      \"requiredMinimum\": 50,\n" +
             "      \"requiredMaximum\": 100000,\n" +
@@ -33,7 +33,7 @@ class WorkFlowRepository {
             "      \"warningString\": \"Weight entry looks fishy, please confirm it is correct and in POUNDS\"\n" +
             "    },\n" +
             "    {\n" +
-            "      \"workFlowType\": \"BooleanInputWorkFlow\",\n" +
+            "      \"widgetType\": \"BooleanInputFormWidget\",\n" +
             "      \"preFill\": false,\n" +
             "      \"trueRequired\": true,\n" +
             "      \"key\": \"checkedThing\",\n" +
@@ -48,9 +48,9 @@ class WorkFlowRepository {
         Log.d("requestBody", "$json")
     }
 
-    fun getWorkFlows(): Event {
+    fun getWorkFlow(): WorkFlow {
         val moshi =  WorkFlowMoshiProvider().getMoshi()
-        val adapter = moshi.adapter(Event::class.java)
-        return adapter.fromJson(string) ?: Event.EMPTY_EVENT
+        val adapter = moshi.adapter(WorkFlow::class.java)
+        return adapter.fromJson(string) ?: WorkFlow.EMPTY_EVENT
     }
 }

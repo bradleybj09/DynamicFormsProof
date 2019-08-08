@@ -8,12 +8,12 @@ class WorkFlowMoshiProvider {
 
     fun getMoshi(): Moshi {
         return Moshi.Builder()
-            .add(PolymorphicJsonAdapterFactory.of(WorkFlow::class.java, "workFlowType")
-                .withSubtype(TextInputWorkFlow::class.java, "TextInputWorkFlow")
-                .withSubtype(NumberInputWorkFlow::class.java, "NumberInputWorkFlow")
-                .withSubtype(BooleanInputWorkFlow::class.java, "BooleanInputWorkFlow")
-                .withSubtype(SingleSelectWorkFlow::class.java, "SingleSelectWorkFlow")
-                .withSubtype(MultiSelectWorkFlow::class.java, "MultiSelectWorkFlow"))
+            .add(PolymorphicJsonAdapterFactory.of(FormWidget::class.java, "widgetType")
+                .withSubtype(TextInputFormWidget::class.java, "TextInputFormWidget")
+                .withSubtype(NumberInputFormWidget::class.java, "NumberInputFormWidget")
+                .withSubtype(BooleanInputFormWidget::class.java, "BooleanInputFormWidget")
+                .withSubtype(SingleSelectFormWidget::class.java, "SingleSelectFormWidget")
+                .withSubtype(MultiSelectFormWidget::class.java, "MultiSelectFormWidget"))
             .add(KotlinJsonAdapterFactory())
             .build()
     }

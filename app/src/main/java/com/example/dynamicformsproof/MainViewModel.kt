@@ -13,8 +13,8 @@ class MainViewModel : ViewModel() {
     var isSubmitButtonEnabled = MutableLiveData<Boolean>().also { it.value = true }
 
     private val repository = WorkFlowRepository()
-    private lateinit var event: Event
-    private val workFlows = mutableListOf<WorkFlow>()
+    private lateinit var workFlow: WorkFlow
+    private val widgets = mutableListOf<FormWidget>()
 
     fun login() {
         isLoginButtonVisible.value = false
@@ -22,13 +22,13 @@ class MainViewModel : ViewModel() {
     }
 
     fun submit() {
-        val invalidWorkFlows = workFlows.filter { !it.isResponseValid() }
+        val invalidWorkFlows = widgets.filter { !it.isResponseValid() }
         if (invalidWorkFlows.isNotEmpty()) {
             Log.d("invalid","first error: ${invalidWorkFlows.first().invalidString}")
             return
         }
         val json = JSONObject().also { json ->
-            workFlows.forEach { it.addToJson(json) }
+            widgets.forEach { it.addToJson(json) }
         }
         repository.submitData(json)
     }
@@ -37,14 +37,14 @@ class MainViewModel : ViewModel() {
 
     fun removeListener(listener: AddViewListener) = listeners.remove(listener)
 
-    private fun addWorkFlow(workflow: WorkFlow) {
-        workFlows.add(workflow)
+    private fun addWorkFlow(workflow: FormWidget) {
+        widgets.add(workflow)
     }
 
     private fun setup() {
-        event = repository.getWorkFlows().also { e ->
-            e.workFlows.forEach { addWorkFlow(it) }
-            listeners.forEach { it.onViewAdded(e) }
+        workFlow = repository.getWorkFlow().also { w ->
+            w.formWidgets.forEach { addWorkFlow(it) }
+            listeners.forEach { it.onViewAdded(w) }
         }
     }
 }
