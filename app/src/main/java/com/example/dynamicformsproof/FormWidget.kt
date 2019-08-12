@@ -16,6 +16,8 @@ sealed class FormWidget(widgetType: WidgetType) {
     abstract fun isWarningRequired(): Boolean
     abstract val invalidString: String
     abstract val warningString: String
+    @Transient
+    var validationListener: ValidationListener? = null
 }
 
 /** We could have a special ConsigneeWorkFlow that would implement saving and prefilling to following ConsigneeWorkFlow objects,
@@ -89,8 +91,10 @@ data class SingleSelectFormWidget(
 }
 
 data class MultiSelectFormWidget(
-    var preSelect: Array<Int>,
+    var preSelect: List<Int>,
+    var noInteract: List<Int>,
     var maxColumns: Int,
+    var hint: String,
     var key: String,
     var choices: MutableList<String>,
     var minChoices: Int,
@@ -98,9 +102,10 @@ data class MultiSelectFormWidget(
     override val invalidString: String,
     override val warningString: String
 ) : FormWidget(WidgetType.MultiSelect) {
-    val adapter = MultiSelectWidgetAdapter<String>()
-    var preSelects = choices.filterIndexed { i, _ -> i in preSelect }
-    val selections: List<String>
+    val adapter = MultiSelectWidgetAdapter<String>().apply {
+        setChoices(choices, preSelect, noInteract)
+    }
+    private val selections: List<String>
         get() = adapter.getSelections()
     override fun addToJson(json: JSONObject) = Unit.also { json.put(key, adapter.getSelections()) }
     override fun isResponseValid() = selections.size in minChoices..maxChoices

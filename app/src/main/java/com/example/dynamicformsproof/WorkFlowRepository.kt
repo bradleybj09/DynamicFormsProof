@@ -40,6 +40,34 @@ class WorkFlowRepository {
             "      \"hint\": \"Thing checked\",\n" +
             "      \"invalidString\": \"You cannot continue without marking that you have checked the thing\",\n" +
             "      \"warningString\": \"\"\n" +
+            "    },\n" +
+            "    {\n" +
+            "      \"widgetType\": \"MultiSelectFormWidget\",\n" +
+            "      \"maxColumns\": 3,\n" +
+            "      \"preSelect\": [\n" +
+            "        2,\n" +
+            "        4\n" +
+            "      ],\n" +
+            "      \"noInteract\": [\n" +
+            "        1,\n" +
+            "        4\n" +
+            "      ],\n" +
+            "      \"key\": \"multipleThings\",\n" +
+            "      \"hint\": \"Many things\",\n" +
+            "      \"choices\": [\n" +
+            "        \"Thing 1\",\n" +
+            "        \"Thing 2\",\n" +
+            "        \"Thing 3\",\n" +
+            "        \"Thing 4\",\n" +
+            "        \"Thing 5\",\n" +
+            "        \"Thing 6\",\n" +
+            "        \"Thing 7\",\n" +
+            "        \"Thing 8\"\n" +
+            "      ],\n" +
+            "      \"minChoices\": 3,\n" +
+            "      \"maxChoices\": 5,\n" +
+            "      \"invalidString\": \"You must select between 3 and 5 things\",\n" +
+            "      \"warningString\": \"\"\n" +
             "    }\n" +
             "  ]\n" +
             "}"

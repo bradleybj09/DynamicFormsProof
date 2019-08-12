@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import org.json.JSONObject
 
-class MainViewModel : ViewModel() {
+class MainViewModel : ViewModel(), ValidationListener {
 
     private val listeners = mutableListOf<AddViewListener>()
 
@@ -37,8 +37,14 @@ class MainViewModel : ViewModel() {
 
     fun removeListener(listener: AddViewListener) = listeners.remove(listener)
 
-    private fun addWorkFlow(workflow: FormWidget) {
-        widgets.add(workflow)
+    private fun addWorkFlow(widget: FormWidget) {
+        widget.validationListener = this
+        widgets.add(widget)
+    }
+
+    override fun checkValidation() {
+        val valid = widgets.all { it.isResponseValid() }
+        Log.d("is valid:", "$valid")
     }
 
     private fun setup() {

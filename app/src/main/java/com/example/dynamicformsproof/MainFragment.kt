@@ -10,6 +10,8 @@ import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.view.ViewCompat.generateViewId
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.dynamicformsproof.databinding.*
 import java.lang.RuntimeException
 
@@ -45,21 +47,33 @@ class MainFragment : Fragment(), AddViewListener {
         val widgets = workFlow.formWidgets
         widgets.forEach { data ->
             val newView = when (data) {
-                is BooleanInputFormWidget -> WorkFlowBooleanInputBinding.inflate(
+                is BooleanInputFormWidget -> WidgetBooleanInputBinding.inflate(
                     layoutInflater,
                     rootView,
                     false
                 ).also { it.data = data }.root
-                is TextInputFormWidget -> WorkFlowTextInputBinding.inflate(
+                is TextInputFormWidget -> WidgetTextInputBinding.inflate(
                     layoutInflater,
                     rootView,
                     false
                 ).also { it.data = data }.root
-                is NumberInputFormWidget -> WorkFlowNumberInputBinding.inflate(
+                is NumberInputFormWidget -> WidgetNumberInputBinding.inflate(
                     layoutInflater,
                     rootView,
                     false
                 ).also { it.data = data }.root
+                is MultiSelectFormWidget -> WidgetMultiSelectBinding.inflate(
+                    layoutInflater,
+                    rootView,
+                    false
+                ).also {
+                    it.data = data
+                    it.widgetRecyclerView.layoutManager = if (data.maxColumns == 1) {
+                        LinearLayoutManager(context)
+                    } else {
+                        GridLayoutManager(context, data.maxColumns)
+                    }
+                }.root
                 else -> throw RuntimeException()
             }
             views.add(newView)
