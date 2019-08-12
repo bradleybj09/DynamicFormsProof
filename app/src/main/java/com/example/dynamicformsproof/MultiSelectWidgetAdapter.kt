@@ -1,5 +1,6 @@
 package com.example.dynamicformsproof
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.lifecycle.LiveData
@@ -19,7 +20,7 @@ class MultiSelectWidgetAdapter<T> : RecyclerView.Adapter<SelectableItemViewHolde
         this.choices = listOfSelectableItemChoices(choices)
         preSelect.forEach {
             if (it < choices.size) {
-                this.choices[it]._isSelected.value = true
+                this.choices[it].isSelected.value = true
             }
         }
         notifyDataSetChanged()
@@ -29,17 +30,47 @@ class MultiSelectWidgetAdapter<T> : RecyclerView.Adapter<SelectableItemViewHolde
         this.choices = listOfSelectableItemChoices(choices)
         preSelect.forEach { i ->
             if (i < choices.size) {
-                this.choices[i]._isSelected.value = true
+                this.choices[i].isSelected.value = true
             }
         }
         noInteract.forEach { i ->
             if (i < choices.size) {
+                Log.d("noInteract","index $i")
                 this.choices[i]._isInteractible.value = false
+                Log.d("noInteract", this.choices[i].itemString)
             }
         }
         notifyDataSetChanged()
     }
 
+    fun setChoices(choices: List<T>, preSelect: List<Int>, indexesDisabled: List<Int>, indexesSelectDisabled: List<Int>, indexesDeselectDisabled: List<Int>) {
+        this.choices = listOfSelectableItemChoices(choices)
+        preSelect.forEach { i ->
+            if (i < choices.size) {
+                this.choices[i].isSelected.value = true
+            }
+        }
+        indexesDisabled.forEach { i ->
+            if (i < choices.size) {
+                this.choices[i]._isInteractible.value = false
+            }
+        }
+        indexesSelectDisabled.forEach { i ->
+            if (i < choices.size && !preSelect.contains(i)) {
+                Log.d("noSelect","index $i")
+                this.choices[i]._isInteractible.value = false
+                Log.d("noSelect", this.choices[i].itemString)
+            }
+        }
+        indexesDeselectDisabled.forEach { i ->
+            if (i < choices.size && preSelect.contains(i)) {
+                Log.d("noDeselect","index $i")
+                this.choices[i]._isInteractible.value = false
+                Log.d("noDeselect", this.choices[i].itemString)
+            }
+        }
+        notifyDataSetChanged()
+    }
 
     fun getSelections(): List<T> {
         return choices.filter { it.isSelected.value == true }.map { it.item }
@@ -68,10 +99,10 @@ class SelectableItemViewHolder(private val binding: ItemMultiSelectBinding) : Re
 }
 
 data class SelectableItemChoice<T>(val item: T) {
-    var _isSelected = MutableLiveData<Boolean>().also { it.value = false }
-    var _isInteractible = MutableLiveData<Boolean>().also { it.value = false }
-    val isSelected: LiveData<Boolean>
-        get() = _isSelected
+    // expose MutableLiveData for 2-way data binding
+    var isSelected = MutableLiveData<Boolean>().also { it.value = false }
+    // expose read-only LiveData for 1-way data binding
+    var _isInteractible = MutableLiveData<Boolean>().also { it.value = true }
     val isInteractible: LiveData<Boolean>
         get() = _isInteractible
     val itemString: String

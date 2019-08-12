@@ -14,6 +14,6 @@
             app:layout_constraintTop_toTopOf="parent"
             android:text="@{item.itemString}"
             android:enabled="@{item.isInteractible()}"
-            android:checked="@{item.isSelected()}" />
+            android:checked="@={item.isSelected()}" />
 
 </layout>

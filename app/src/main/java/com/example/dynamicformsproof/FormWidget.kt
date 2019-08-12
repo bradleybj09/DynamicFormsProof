@@ -92,7 +92,9 @@ data class SingleSelectFormWidget(
 
 data class MultiSelectFormWidget(
     var preSelect: List<Int>,
-    var noInteract: List<Int>,
+    var indexesSelectDisabled: List<Int>,
+    var indexesDeselectDisabled: List<Int>,
+    var indexesDisabled: List<Int>,
     var maxColumns: Int,
     var hint: String,
     var key: String,
@@ -103,7 +105,7 @@ data class MultiSelectFormWidget(
     override val warningString: String
 ) : FormWidget(WidgetType.MultiSelect) {
     val adapter = MultiSelectWidgetAdapter<String>().apply {
-        setChoices(choices, preSelect, noInteract)
+        setChoices(choices, preSelect, indexesDisabled, indexesSelectDisabled, indexesDeselectDisabled)
     }
     private val selections: List<String>
         get() = adapter.getSelections()

@@ -48,21 +48,26 @@ class WorkFlowRepository {
             "        2,\n" +
             "        4\n" +
             "      ],\n" +
-            "      \"noInteract\": [\n" +
+            "      \"indexesDisabled\": [],\n" +
+            "      \"indexesSelectDisabled\": [\n" +
             "        1,\n" +
-            "        4\n" +
+            "        2\n" +
+            "      ],\n" +
+            "      \"indexesDeselectDisabled\": [\n" +
+            "        4,\n" +
+            "        5\n" +
             "      ],\n" +
             "      \"key\": \"multipleThings\",\n" +
             "      \"hint\": \"Many things\",\n" +
             "      \"choices\": [\n" +
+            "        \"Thing 0\",\n" +
             "        \"Thing 1\",\n" +
             "        \"Thing 2\",\n" +
             "        \"Thing 3\",\n" +
             "        \"Thing 4\",\n" +
             "        \"Thing 5\",\n" +
             "        \"Thing 6\",\n" +
-            "        \"Thing 7\",\n" +
-            "        \"Thing 8\"\n" +
+            "        \"Thing 7\"\n" +
             "      ],\n" +
             "      \"minChoices\": 3,\n" +
             "      \"maxChoices\": 5,\n" +
@@ -79,6 +84,6 @@ class WorkFlowRepository {
     fun getWorkFlow(): WorkFlow {
         val moshi =  WorkFlowMoshiProvider().getMoshi()
         val adapter = moshi.adapter(WorkFlow::class.java)
-        return adapter.fromJson(string) ?: WorkFlow.EMPTY_EVENT
+        return adapter.fromJson(string) ?: WorkFlow.EMPTY_WORKFLOW
     }
 }
