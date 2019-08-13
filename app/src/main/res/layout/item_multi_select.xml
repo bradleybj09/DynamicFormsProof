@@ -13,7 +13,7 @@
             android:layout_height="wrap_content"
             app:layout_constraintTop_toTopOf="parent"
             android:text="@{item.itemString}"
-            android:enabled="@{item.isInteractible()}"
+            android:enabled="@{item.isEnabled()}"
             android:checked="@={item.isSelected()}" />
 
 </layout>

@@ -3,7 +3,6 @@ package com.example.dynamicformsproof
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.RecyclerView
 import com.example.dynamicformsproof.databinding.ItemMultiSelectBinding
@@ -36,7 +35,7 @@ class MultiSelectWidgetAdapter<T> : RecyclerView.Adapter<SelectableItemViewHolde
         noInteract.forEach { i ->
             if (i < choices.size) {
                 Log.d("noInteract","index $i")
-                this.choices[i]._isInteractible.value = false
+                this.choices[i].isEnabled.value = false
                 Log.d("noInteract", this.choices[i].itemString)
             }
         }
@@ -52,20 +51,20 @@ class MultiSelectWidgetAdapter<T> : RecyclerView.Adapter<SelectableItemViewHolde
         }
         indexesDisabled.forEach { i ->
             if (i < choices.size) {
-                this.choices[i]._isInteractible.value = false
+                this.choices[i].isEnabled.value = false
             }
         }
         indexesSelectDisabled.forEach { i ->
             if (i < choices.size && !preSelect.contains(i)) {
                 Log.d("noSelect","index $i")
-                this.choices[i]._isInteractible.value = false
+                this.choices[i].isEnabled.value = false
                 Log.d("noSelect", this.choices[i].itemString)
             }
         }
         indexesDeselectDisabled.forEach { i ->
             if (i < choices.size && preSelect.contains(i)) {
                 Log.d("noDeselect","index $i")
-                this.choices[i]._isInteractible.value = false
+                this.choices[i].isEnabled.value = false
                 Log.d("noDeselect", this.choices[i].itemString)
             }
         }
@@ -99,12 +98,8 @@ class SelectableItemViewHolder(private val binding: ItemMultiSelectBinding) : Re
 }
 
 data class SelectableItemChoice<T>(val item: T) {
-    // expose MutableLiveData for 2-way data binding
     var isSelected = MutableLiveData<Boolean>().also { it.value = false }
-    // expose read-only LiveData for 1-way data binding
-    var _isInteractible = MutableLiveData<Boolean>().also { it.value = true }
-    val isInteractible: LiveData<Boolean>
-        get() = _isInteractible
+    var isEnabled = MutableLiveData<Boolean>().also { it.value = true }
     val itemString: String
         get() = item.toString()
 }
