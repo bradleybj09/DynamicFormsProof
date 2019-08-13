@@ -79,6 +79,7 @@ data class SingleSelectFormWidget(
     var preSelect: Int?,
     var key: String,
     var choices: Array<String>,
+    var hint: String,
     var required: Boolean,
     override val invalidString: String,
     override val warningString: String

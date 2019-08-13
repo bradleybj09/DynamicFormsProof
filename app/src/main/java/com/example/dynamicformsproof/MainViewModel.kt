@@ -1,6 +1,7 @@
 package com.example.dynamicformsproof
 
 import android.util.Log
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import org.json.JSONObject
@@ -11,9 +12,10 @@ class MainViewModel : ViewModel(), ValidationListener {
 
     var isLoginButtonVisible = MutableLiveData<Boolean>().also { it.value = true }
     var isSubmitButtonEnabled = MutableLiveData<Boolean>().also { it.value = true }
+    private var _workflow = MutableLiveData<WorkFlow>().also { it.value = WorkFlow.EMPTY_WORKFLOW }
+    val workFlow: LiveData<WorkFlow> =_workflow
 
     private val repository = WorkFlowRepository()
-    private lateinit var workFlow: WorkFlow
     private val widgets = mutableListOf<FormWidget>()
 
     fun login() {
@@ -48,9 +50,11 @@ class MainViewModel : ViewModel(), ValidationListener {
     }
 
     private fun setup() {
-        workFlow = repository.getWorkFlow().also { w ->
+        repository.getWorkFlow().also { w ->
             w.formWidgets.forEach { addWorkFlow(it) }
-            listeners.forEach { it.onViewAdded(w) }
+            _workflow.value = w
+        //    listeners.forEach { it.onViewAdded(w) }
+
         }
     }
 }
