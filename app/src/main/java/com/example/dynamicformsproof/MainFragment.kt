@@ -15,7 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.dynamicformsproof.databinding.*
 import java.lang.RuntimeException
 
-class MainFragment : Fragment(), AddViewListener {
+class MainFragment : Fragment() {
 
     lateinit var viewModel: MainViewModel
     lateinit var binding: FragmentMainBinding
@@ -28,71 +28,5 @@ class MainFragment : Fragment(), AddViewListener {
         binding.viewModel = viewModel
         this.container = binding.mainContainerLayout
         return binding.root
-    }
-
-    override fun onResume() {
-        super.onResume()
-        viewModel.addListener(this)
-    }
-
-    override fun onPause() {
-        super.onPause()
-        viewModel.removeListener(this)
-    }
-
-    override fun onViewAdded(workFlow: WorkFlow) {
-        Log.d("fragment", "onViewAdded called with workFlow: $workFlow")
-        val rootView = view?.rootView as ViewGroup
-        val views = mutableListOf<View>()
-        val widgets = workFlow.formWidgets
-        widgets.forEach { data ->
-            val newView = when (data) {
-                is BooleanInputFormWidget -> WidgetBooleanInputBinding.inflate(
-                    layoutInflater,
-                    rootView,
-                    false
-                ).also { it.data = data }.root
-                is TextInputFormWidget -> WidgetTextInputBinding.inflate(
-                    layoutInflater,
-                    rootView,
-                    false
-                ).also { it.data = data }.root
-                is NumberInputFormWidget -> WidgetNumberInputBinding.inflate(
-                    layoutInflater,
-                    rootView,
-                    false
-                ).also { it.data = data }.root
-                is MultiSelectFormWidget -> WidgetMultiSelectBinding.inflate(
-                    layoutInflater,
-                    rootView,
-                    false
-                ).also {
-                    it.data = data
-                    it.widgetRecyclerView.layoutManager = if (data.maxColumns == 1) {
-                        LinearLayoutManager(context)
-                    } else {
-                        GridLayoutManager(context, data.maxColumns)
-                    }
-                }.root
-                else -> throw RuntimeException()
-            }
-            views.add(newView)
-        }
-        views.forEach { widgetView ->
-            widgetView.id = generateViewId()
-            container.addView(widgetView)
-        }
-        val constraintSet = ConstraintSet().also { it.clone(container) }
-
-        lateinit var previous: View
-        for (i in 0 until views.size) {
-            if (i == 0) {
-                constraintSet.connect(views[i].id, ConstraintSet.TOP, ConstraintSet.PARENT_ID, ConstraintSet.TOP)
-            } else {
-                constraintSet.connect(views[i].id, ConstraintSet.TOP, previous.id, ConstraintSet.BOTTOM)
-            }
-            previous = views[i]
-        }
-        constraintSet.applyTo(container)
     }
 }
